@@ -36,22 +36,10 @@ public class Elevator extends SubsystemBase{
             .smartCurrentLimit(40)
             .inverted(true)
             .idleMode(IdleMode.kBrake);
-        rightconfig.encoder
-            .positionConversionFactor(1000)
-            .velocityConversionFactor(1000);
-        rightconfig.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(1.0, 0.0, 0.0);
         leftconfig
             .smartCurrentLimit(40)
             .inverted(false)
             .idleMode(IdleMode.kBrake);
-        leftconfig.encoder
-            .positionConversionFactor(1000)
-            .velocityConversionFactor(1000);
-        leftconfig.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(1.0, 0.0, 0.0);
         leftconfig
             .follow(rightMotor, true);
         rightconfig.encoder
