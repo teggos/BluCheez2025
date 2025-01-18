@@ -2,6 +2,8 @@ package frc.robot.subsystems.Subsystems.Elevator;
 
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 
 import com.revrobotics.RelativeEncoder;
@@ -24,6 +26,10 @@ public class Elevator extends SubsystemBase{
 
     private RelativeEncoder leftEncoder;
     private RelativeEncoder rightEncoder;
+
+    public ElevatorFeedforward feedforward = new ElevatorFeedforward(ElevatorConstants.s, ElevatorConstants.g, ElevatorConstants.v, ElevatorConstants.a);
+
+    private final PIDController pid;
 
     public double currentHeight;
 
@@ -50,14 +56,16 @@ public class Elevator extends SubsystemBase{
 
         leftEncoder = leftMotor.getEncoder();
         rightEncoder = rightMotor.getEncoder();
+
+        pid = new PIDController(ElevatorConstants.p, ElevatorConstants.i, ElevatorConstants.d);
     }
     //yay
-    public void setspeed(double speed){
+    public void setPosition(double position){
 
         currentHeight = rightEncoder.getPosition();
 
-        if (speed > 0.0 && currentHeight <= ElevatorConstants.MaxHeight){
-            rightMotor.set(speed);
+        if (currentHeight <= ElevatorConstants.MaxHeight){
+            rightMotor.setVoltage(pid.calculate(rightEncoder.getPosition(), position));
         }
         else{
             rightMotor.set(0.0);

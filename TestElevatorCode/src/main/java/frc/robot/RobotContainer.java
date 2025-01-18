@@ -23,8 +23,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    controller.povUp().whileTrue(new RunCommand(() -> elevator.setspeed(0.3), elevator));
-    controller.povDown().whileTrue(new RunCommand(() -> elevator.setspeed(-0.3), elevator));
+    controller.povUp().onTrue(new RunCommand(() -> elevator.setPosition(0.5), elevator));
+    controller.povDown().onTrue((new RunCommand(() -> elevator.setPosition(1.1), elevator)));
   }
 
   public Command getAutonomousCommand() {
