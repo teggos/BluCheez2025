@@ -52,7 +52,7 @@ public class Elevator extends SubsystemBase{
             .positionConversionFactor(6.75 * 2.0 * Math.PI * Units.inchesToMeters(0.918));
     
         rightMotor.configure(rightconfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        leftMotor.configure(rightconfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        leftMotor.configure(leftconfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         leftEncoder = leftMotor.getEncoder();
         rightEncoder = rightMotor.getEncoder();
