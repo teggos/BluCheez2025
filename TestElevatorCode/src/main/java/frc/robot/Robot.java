@@ -4,17 +4,37 @@
 
 package frc.robot;
 
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.state;
 
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
-
+  
   public Robot() {
+    Constants.robotState = isReal() ? state.real : state.sim;
+    
+    switch (Constants.robotState) {
+      case real:
+        Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
+        Logger.addDataReceiver(new NT4Publisher());
+        break;
+    
+      case sim:
+        Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+        break;
+    }
+    Logger.start();
     m_robotContainer = new RobotContainer();
+    Logger.recordMetadata("Elevator Code", "Log");
   }
 
   @Override

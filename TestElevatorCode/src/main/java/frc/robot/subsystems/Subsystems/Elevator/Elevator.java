@@ -6,6 +6,8 @@ import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -73,7 +75,7 @@ public class Elevator extends SubsystemBase{
         
     }
 
-    public double getPosition(){
+    public double getPosition() {
         return rightEncoder.getPosition();
     }
 
@@ -86,5 +88,8 @@ public class Elevator extends SubsystemBase{
        leftEncoder.setPosition(0);
     }
 
-
+    @Override
+    public void periodic() {
+        Logger.recordOutput("Elevator Height", getPosition());
+    }
 }
