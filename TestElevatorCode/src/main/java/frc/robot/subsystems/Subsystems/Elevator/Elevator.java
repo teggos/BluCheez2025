@@ -50,11 +50,11 @@ public class Elevator extends SubsystemBase{
             .idleMode(IdleMode.kBrake);
         leftconfig
             .follow(rightMotor, true);
-        rightconfig.encoder
+        leftconfig.encoder
             .positionConversionFactor(6.75 * 2.0 * Math.PI * Units.inchesToMeters(0.918));
     
         rightMotor.configure(rightconfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        leftMotor.configure(rightconfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        leftMotor.configure(leftconfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         leftEncoder = leftMotor.getEncoder();
         rightEncoder = rightMotor.getEncoder();
@@ -64,7 +64,7 @@ public class Elevator extends SubsystemBase{
     //yay
     public void setPosition(double position){
 
-        currentHeight = rightEncoder.getPosition();
+        currentHeight = leftEncoder.getPosition();
 
         if (currentHeight <= ElevatorConstants.MaxHeight){
             rightMotor.setVoltage(pid.calculate(rightEncoder.getPosition(), position));
@@ -76,11 +76,11 @@ public class Elevator extends SubsystemBase{
     }
 
     public double getPosition() {
-        return rightEncoder.getPosition();
+        return leftEncoder.getPosition();
     }
 
     public double getVelocity(){
-        return rightEncoder.getVelocity();
+        return leftEncoder.getVelocity();
     }
 
     public void resetEncoders(){
